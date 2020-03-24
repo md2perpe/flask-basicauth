@@ -12,7 +12,7 @@
 import base64
 from functools import wraps
 
-from flask import current_app, request, Response
+from flask import current_app, request, abort
 
 
 __version__ = '0.2.0'
@@ -92,10 +92,7 @@ class BasicAuth(object):
             the required authentication scheme and authentication realm.
         """
         realm = current_app.config['BASIC_AUTH_REALM']
-        return Response(
-            status=401,
-            headers={'WWW-Authenticate': 'Basic realm="%s"' % realm}
-        )
+        abort(401, www_authenticate='Basic realm="%s"' % realm)
 
     def required(self, view_func):
         """
